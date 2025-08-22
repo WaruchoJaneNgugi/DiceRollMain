@@ -1,0 +1,67 @@
+import {Dispatch, FC, SetStateAction} from "react";
+import {DiceBetHistory} from "./DiceBetHistory.tsx";
+
+interface diceBetControlsProps {
+    OnChangeBetAmount: Dispatch<SetStateAction<number>>;
+    progressOverUnder: string;
+    diceBetAmount: number;
+    OnSetGame: (option: string) => void;
+}
+
+export const DiceBetControls: FC<diceBetControlsProps> = ({OnChangeBetAmount, diceBetAmount, OnSetGame}) => {
+    const handleDiceBetAmountChange = (amount: number) => {
+        OnChangeBetAmount(amount);
+    };
+
+    return (
+        <div className="main-dice-controls-container">
+            <div className='dice-bet-controls-title'>
+                Bet Amount
+            </div>
+            <div className="dice-controls-container">
+                <div className="dice-controls-shortcuts-container">
+                    <div className="dice-controls-shortcuts">
+                        {[5, 10, 50, 100].map((value, index) => (
+                            <div
+                                className={`dice-controls-shortcuts-btn ${diceBetAmount === value ? "dice-shortcuts-select" : ""}`}
+                                key={index}
+                                onClick={() => handleDiceBetAmountChange(value)}>
+                                {value}
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="dice-controls-input-container">
+                        <div className="dice-controls-plus-minus"
+                             onClick={() => handleDiceBetAmountChange(Math.max(diceBetAmount - 1, 1))}> -
+                        </div>
+                        <input className="dice-controls-input" type="text" value={diceBetAmount}
+                               onChange={(e) => handleDiceBetAmountChange(parseInt(e.target.value, 10) || 0)}/>
+
+                        <div className="dice-controls-plus-minus"
+                             onClick={() => handleDiceBetAmountChange(Math.min(diceBetAmount + 1, 100))}>+
+                        </div>
+                    </div>
+                </div>
+                <div className="dice-over-under-prediction">
+                    {["under", "over"].map((option) => (
+                        <div
+                            key={option}
+                            className="dice-over-under-btn"
+                            style={{
+                                backgroundImage: option === "over"
+                                    ? "linear-gradient(to right, #4facfe 0%, #00f2fe 100%)"
+                                    : "linear-gradient(-225deg, #7742B2 0%, #F180FF 52%, #FD8BD9 100%)"
+                            }}
+                            onClick={() => OnSetGame(option)}
+                        >
+                            {option.charAt(0).toUpperCase() + option.slice(1)}
+                        </div>
+                    ))}
+                </div>
+            </div>
+            <DiceBetHistory/>
+        </div>
+    )
+
+}
