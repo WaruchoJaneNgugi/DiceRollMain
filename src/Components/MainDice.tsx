@@ -14,7 +14,7 @@ import diceLogo from "../assets/img/DiceRoll-logo.png";
 import {DiceRollSettingsDialog} from "./DiceRollSettingsDialog.tsx";
 export const MainDice = () => {
     const [progressOverUnder, setProgressOverUnder] = useState<string>("over");
-    const [diceBetAmount, setDiceBetAmount] = useState<number>(1);
+    const [diceBetAmount, setDiceBetAmount] = useState<number>(20);
     const [diceGameActive, setDiceGameActive] = useState<boolean>(false);
     const [diceIsSpinning, setDiceIsSpinning] = useState<boolean>(false);
     const [DiceOutcomeSum, setDiceOutcomeSum] = useState<number>(0);
@@ -62,11 +62,11 @@ export const MainDice = () => {
         setDiceGameActive(true);
         setDiceIsSpinning(true);
         playDiceLoop();
-        // const queryParams = new URLSearchParams(window.location.search);
-        // const sess = queryParams.get("sess") || " ";
+        const queryParams = new URLSearchParams(window.location.search);
+        const sess = queryParams.get("sess") || " ";
         const DiceData: DiceSendData = {
-            // msisdn: sess,
-            msisdn:"254791847766",
+            msisdn: sess,
+            // msisdn:"254791847766",
             option: option === "over" ? "OVER" : "UNDER",
             amount: diceBetAmount
         }
